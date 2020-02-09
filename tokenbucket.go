@@ -14,7 +14,7 @@ import (
 // when request arrives if at least one token is in the bucket, 1 token removed from the bucket, and the request is allowed.
 // if 0 tokens in the bucket, no tokens removed and the request is considered as not allowed.
 
-// TokenBucket contains parameters to implement the algorithm
+// TokenBucket contains elements to implement the algorithm
 type TokenBucket struct {
 	ctx           context.Context
 	capacity      uint32
