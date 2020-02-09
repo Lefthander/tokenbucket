@@ -10,7 +10,7 @@ import (
 // 1. Create a bucket and check that amount of tokens does not decreased when there are no requests to the bucket.
 // 2. Create a bucket and check that it's possible to get all capacity without any cancelation from the bucket in the burst
 // 3. Create an empty bucket and check that all followup requests will be disallowed.
-// 4. Create a bucket wich allows to have not more then 10 request per minute
+// 4. Create a bucket which allows to have not more then 10 request per minute
 // 5. Create a bucket with significant capacity, start taking tokens from it, reset bucket. Ensure that bucket returns to initial state: Capacity == currentAmount
 
 // 1. Create a bucket and check that amount of tokens does not decreased when there are no requests to the bucket.
@@ -43,9 +43,9 @@ func TestStillBucket(t *testing.T) {
 // 2. Create a bucket and check that it's possible to get all capacity without any cancelation from the bucket in the burst
 func TestFullBucket(t *testing.T) {
 
-	allow := false
-	capacity := 5
+	var allow bool
 
+	capacity := 5
 	fillRate := 1 * time.Second // Set a quite long period of refill
 
 	ctx, done := context.WithCancel(context.Background())
@@ -152,7 +152,7 @@ func TestZeroCapacityBucket(t *testing.T) {
 	// Check the consistency of Bucket
 
 	if !(tb.Capacity() == tb.Amount()) && tb.Amount() != 0 {
-		t.Errorf("Bucket is unconsistent capacity=%d, currentAmount=%d", tb.Capacity(), tb.Amount())
+		t.Errorf("Bucket is inconsistent capacity=%d, currentAmount=%d", tb.Capacity(), tb.Amount())
 	}
 
 }
