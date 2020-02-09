@@ -26,16 +26,14 @@ type TokenBucket struct {
 
 var (
 	// ErrTokenBucketInvalidFillRate appears when the rate ==0 is used. To avoid the panic of NewTimeTicker()
-	ErrTokenBucketInvalidFillRate = errors.New("Invalid rate, zero value is not allowed")
+	ErrTokenBucketInvalidFillRate = errors.New("invalid rate, zero value is not allowed")
 )
 
 // NewTokenBucket creates a new instance of TokenBucket
 func NewTokenBucket(ctx context.Context, capacity uint32, rate time.Duration) (*TokenBucket, error) {
-
 	// To protect for inaccurate function usage. In case of rate == 0  NewTicker will be created with a very loooong period of tick ~ 290 years.
 	// In other terms ticker will not run in closest time.
 	if rate == 0 {
-
 		return nil, ErrTokenBucketInvalidFillRate
 	}
 
@@ -48,13 +46,11 @@ func NewTokenBucket(ctx context.Context, capacity uint32, rate time.Duration) (*
 	}
 	// Create a go routine with the time.Ticker to fill the bucket with desired rate.
 	go func(tb *TokenBucket) {
-
 		tb.ticker = time.NewTicker(tb.rate)
 
 		defer tb.ticker.Stop()
 
 		for {
-
 			select {
 			case <-tb.ctx.Done():
 				tb.ticker.Stop() // Stops the Ticker
@@ -68,16 +64,13 @@ func NewTokenBucket(ctx context.Context, capacity uint32, rate time.Duration) (*
 				continue
 			}
 		}
-
 	}(tb)
-
 	return tb, nil
 }
 
 // Allow returns true in case we have tokens in the bucket. One authorization event has a weight of one token
 // When it is allowed to pass, we decrese the CurrentAmount of tokens by 1
 func (tb *TokenBucket) Allow() bool {
-
 	if tb.currentAmount > 0 { // Bucket is not empty
 		atomic.AddUint32(&tb.currentAmount, ^uint32(0)) // decrease the number of tokens in the bucket
 		return true
